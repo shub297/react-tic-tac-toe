@@ -1,3 +1,2 @@
-# Tic Tac Toe
-
+# react-tic-tac-toe
 Tic Tac Toe Board Game built in React
