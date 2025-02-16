@@ -3,12 +3,32 @@ import Square from "./components/Square";
 
 function Board() {
   const [squares, setSquares] = useState(Array(9).fill(null));
+  const [xIsNext, setXIsNext] = useState(true); // Keep track whether to add 'X' or 'O'
 
   function handleClick(index: number): void {
+    if (squares[index] || calculateWinner(squares)) {
+      return; // return early if square[i] has been marked already
+    }
+    /*
+     * Create a copy of square to achieve Immutability
+     * Avoiding direct data mutation lets you keep previous versions of the data intact, and reuse them later
+     * all child components re-render automatically when the state of a parent component changes - includes even the child components that weren’t affected by the change
+     * So, for performance - skip re-rendering components which did not change
+     * Immutability makes it very cheap for components to compare whether their data has changed or not
+     */
     const nextSquares = squares.slice();
-    nextSquares[index] = "X";
+
+    xIsNext ? (nextSquares[index] = "X") : (nextSquares[index] = "O");
+
     setSquares(nextSquares);
+    setXIsNext(!xIsNext);
   }
+
+  const winner: string | null = calculateWinner(squares);
+  let status: string;
+  status = winner
+    ? "Winner: " + winner
+    : "Next Player: " + (xIsNext ? "X" : "O");
 
   return (
     <>
@@ -30,8 +50,29 @@ function Board() {
           <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
         </div>
       </div>
+      <h2>{status}</h2>
     </>
   );
+}
+
+function calculateWinner(squares: string[]): string | null {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
 }
 
 export default Board;

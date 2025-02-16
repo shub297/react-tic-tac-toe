@@ -15,8 +15,9 @@ h1 {
 }
 
 h2 {
-  margin-top: 0;
-  font-size: 20px;
+  margin: 12px 0;
+  font-size: 16px;
+  text-align: center;
 }
 
 h3 {
