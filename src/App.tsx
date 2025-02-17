@@ -41,16 +41,17 @@ function Game() {
     <>
       <h1>Let's play Tic Tac!</h1>
       <div className="game">
-        <div className="game-board">
+        <section className="game-board">
           <Board
             xIsNext={xIsNext}
             squares={currentSquares}
             onPlay={handlePlay}
           />
-        </div>
-        <div className="game-info">
+        </section>
+        <section className="game-info">
+          <h2 aria-live="polite">Move History</h2>
           <ol>{moves}</ol>
-        </div>
+        </section>
       </div>
     </>
   );

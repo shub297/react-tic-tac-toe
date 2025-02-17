@@ -42,11 +42,11 @@ function Board({ xIsNext, squares, onPlay }: BoardProps) {
           </div>
         ))}
       </div>
-      <h2>
+      <h3>
         {calculateWinner(squares)
           ? `Winner: ${calculateWinner(squares)}`
           : `Next Player: ${xIsNext ? "X" : "O"}`}
-      </h2>
+      </h3>
     </>
   );
 }
