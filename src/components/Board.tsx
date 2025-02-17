@@ -1,10 +1,9 @@
-import { useState } from "react";
 import Square from "./Square";
 
 interface BoardProps {
   xIsNext: boolean;
-  squares: string[];
-  onPlay: (arg0: string[]) => void;
+  squares: (string | null)[];
+  onPlay: (nextSquares: (string | null)[]) => void;
 }
 
 function Board({ xIsNext, squares, onPlay }: BoardProps) {
@@ -19,11 +18,11 @@ function Board({ xIsNext, squares, onPlay }: BoardProps) {
      * So, for performance - skip re-rendering components which did not change
      * Immutability makes it very cheap for components to compare whether their data has changed or not
      */
-    const nextSquares = squares.slice();
+    const updatedBoard = squares.slice();
 
-    xIsNext ? (nextSquares[index] = "X") : (nextSquares[index] = "O");
+    xIsNext ? (updatedBoard[index] = "X") : (updatedBoard[index] = "O");
 
-    onPlay(nextSquares);
+    onPlay(updatedBoard);
   }
 
   const winner: string | null = calculateWinner(squares);
@@ -34,7 +33,6 @@ function Board({ xIsNext, squares, onPlay }: BoardProps) {
 
   return (
     <>
-      <h1>Let's play Tic Tac</h1>
       <div className="board">
         <div className="board-row">
           <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
@@ -57,7 +55,7 @@ function Board({ xIsNext, squares, onPlay }: BoardProps) {
   );
 }
 
-function calculateWinner(squares: string[]): string | null {
+function calculateWinner(squares: (string | null)[]): string | null {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],

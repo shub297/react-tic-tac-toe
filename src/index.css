@@ -48,16 +48,6 @@ ul {
   padding-inline-start: 20px;
 }
 
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: sans-serif;
-  margin: 20px;
-  padding: 0;
-}
-
 .square {
   background: #fff;
   border: 1px solid #999;
@@ -97,4 +87,18 @@ body {
 
 .game-info {
   margin-left: 20px;
+}
+
+.game-info-list {
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+
+.game-info-btn {
+  cursor: pointer;
+  background-color: transparent;
+  border: 2px solid #c0c0c0;
+  font-size: 14px;
+  padding: 2px 6px 3px;
+  text-align: center;
 }
