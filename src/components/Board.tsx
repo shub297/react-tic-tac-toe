@@ -7,6 +7,12 @@ interface BoardProps {
 }
 
 function Board({ xIsNext, squares, onPlay }: BoardProps) {
+  const winnerInfo = calculateWinner(squares);
+  const winner = winnerInfo ? winnerInfo.winner : null;
+  const winningSquares = winnerInfo ? winnerInfo.winningSquares : [];
+  const isDraw =
+    squares.every((square: string | null) => square !== null) && !winner;
+
   function handleClick(index: number): void {
     if (squares[index] || calculateWinner(squares)) {
       return; // return early if square[i] has been marked already
@@ -27,7 +33,11 @@ function Board({ xIsNext, squares, onPlay }: BoardProps) {
 
   function renderSquare(index: number) {
     return (
-      <Square value={squares[index]} onSquareClick={() => handleClick(index)} />
+      <Square
+        value={squares[index]}
+        onSquareClick={() => handleClick(index)}
+        highlight={winningSquares.includes(index)}
+      />
     );
   }
 
@@ -43,15 +53,20 @@ function Board({ xIsNext, squares, onPlay }: BoardProps) {
         ))}
       </div>
       <h3>
-        {calculateWinner(squares)
-          ? `Winner: ${calculateWinner(squares)}`
+        {winner
+          ? `Winner: ${winner}`
+          : isDraw
+          ? "It's a Draw!"
           : `Next Player: ${xIsNext ? "X" : "O"}`}
       </h3>
     </>
   );
 }
 
-function calculateWinner(squares: (string | null)[]): string | null {
+function calculateWinner(squares: (string | null)[]): {
+  winner: string;
+  winningSquares: number[];
+} | null {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -64,7 +79,7 @@ function calculateWinner(squares: (string | null)[]): string | null {
   ];
   for (const [a, b, c] of lines) {
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return { winner: squares[a], winningSquares: [a, b, c] };
     }
   }
   return null;

@@ -46,6 +46,10 @@ ul {
   width: 34px;
 }
 
+.square.highlight {
+  background-color: lightgreen;
+}
+
 .board {
   display: flex;
   flex-direction: column;
